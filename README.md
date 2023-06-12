@@ -1,2 +1,4 @@
-# cs143-coursework-starter
-Starter code repository for CMSC14300 Summer 2023
+# CMSC 14300 Coursework
+
+This directory contains _all_ assignments in this course. All homework
+directories should be named `hw#` where `#` is the homework number.
