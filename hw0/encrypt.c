@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 /* the number of letters we are shifting */
-const char KEY = 5;
+const char KEY = 15;
 
 /* the number of letters in the alphabet */
 const int N_LETTERS_IN_ALPHABET = 26;

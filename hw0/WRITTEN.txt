@@ -23,23 +23,38 @@ d. when you forgot to #include a library; e.g. remove either line 11 or line 12.
 
      ...YOUR ANSWER HERE...
 
-
 --------------------------------------------------------------------------------
 
 Question 2
 
-There are three secret messages in secrets directory. Use your frequency
-analysis to guess the keys of the secret messages.
-
-a. What is secret0.txt? Don't include the entire text, just tell me what it is.
-
-     ...YOUR ANSWER HERE...
-
-a. What is secret1.txt? Don't include the entire text, just tell me what it is.
+In the assignment specification, we know that passing `-o <name>` to clang
+will instruct it to produce an executable called `<name>`. However, when you
+don't include the `-o <name>` flag, clang will choose a default name for the
+produced executable. What is that default name?
 
      ...YOUR ANSWER HERE...
 
-a. What is secret2.txt? Don't include the entire text, just tell me what it is.
+
+--------------------------------------------------------------------------------
+
+Question 3
+
+There are three secret messages in secrets directory that are encrypted with
+difference keys. Use your frequency analysis to figure out the keys and decrypt
+the messages.
+
+a. What is secret0.txt? What is the key? Don't include the entire text, just
+tell me what it is.
+
+     ...YOUR ANSWER HERE...
+
+a. What is secret1.txt? What is the key? Don't include the entire text, just
+tell me what it is.
+
+     ...YOUR ANSWER HERE...
+
+a. What is secret2.txt? What is the key? Don't include the entire text, just
+tell me what it is.
 
      ...YOUR ANSWER HERE...
 
@@ -48,7 +63,7 @@ Please restore the keys of encryption and decryption to 15.
 
 --------------------------------------------------------------------------------
 
-Question 3
+Question 4
 
 Describe your coding set up. What editor do you use? How do you compile, run,
 and test your code? How many windows/tabs do you use? etc.
@@ -58,7 +73,7 @@ and test your code? How many windows/tabs do you use? etc.
 
 --------------------------------------------------------------------------------
 
-Question 4
+Question 5
 
 How many hours did you spend for this assignment?
 
@@ -67,7 +82,7 @@ How many hours did you spend for this assignment?
 
 --------------------------------------------------------------------------------
 
-Question 5
+Question 6
 
 What is the most difficult aspect of this assignment, if any?
 
