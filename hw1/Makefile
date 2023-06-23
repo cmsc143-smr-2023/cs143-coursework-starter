@@ -6,16 +6,16 @@ all: cat diffw
 
 test: readline-test substring-test
 
-cat: cat.o readline.o
+cat: cat.o readline.o dynamic-buffer.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
-diffw: diffw.o readline.o substring.o
+diffw: diffw.o readline.o substring.o dynamic-buffer.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
-readline-test: readline-test.o readline.o
+readline-test: readline-test.o readline.o dynamic-buffer.o
 	$(CC) $(LDFLAGS) -lcriterion -o $@ $^
 
-substring-test: substring-test.o substring.o
+substring-test: substring-test.o substring.o dynamic-buffer.o
 	$(CC) $(LDFLAGS) -lcriterion -o $@ $^
 
 %.o: %.c
