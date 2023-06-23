@@ -78,7 +78,7 @@ void compare_files(FILE *file1, FILE *file2)
                 int line1_len = readline(file1, &line1);
                 int line2_len = readline(file2, &line2);
 
-                if (line1_len == 0 && line1_len == 0) {
+                if (line1_len == 0 && line2_len == 0) {
                         break;
                 } else if (line1_len == 0) {
                         free(line2);
@@ -93,7 +93,7 @@ void compare_files(FILE *file1, FILE *file2)
                 int subs2_len = split(line2, WHITESPACES, &subs2);
 
                 if (subs1_len != subs2_len) {
-                        print_diff(line2, line2);
+                        print_diff(line1, line2);
                 } else if (!substrings_eq(subs1, subs2, subs1_len)) {
                         print_diff(line1, line2);
                 }
