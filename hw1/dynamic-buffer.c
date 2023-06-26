@@ -11,6 +11,10 @@
 /* helper function used internally */
 static void buffer_expand(struct buffer *buf_p, int new_len);
 
+/******************************************************************************/
+/*                            Exported Functions                              */
+/******************************************************************************/
+
 void buffer_init(struct buffer *buf_p, int len)
 {
         assert(buf_p != NULL);
@@ -56,9 +60,13 @@ void buffer_extend(struct buffer *buf_p, const char *str, int n)
         }
 }
 
+/******************************************************************************/
+/*                        Helper Function Definitions                         */
+/******************************************************************************/
+
 static void buffer_expand(struct buffer *buf_p, int new_len)
 {
-        // we can ignore the assertion here because this function only
+        // we can ignore the assertion here because this function is only
         // used internally
 
         int used_len = buffer_length(buf_p);
