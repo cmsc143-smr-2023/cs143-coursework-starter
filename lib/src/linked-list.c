@@ -91,7 +91,7 @@ struct llist *llist_insert_at(struct llist *l, int i, void *elem)
 /* return the resulting list, but assign the removed element to *elem_p */
 struct llist *llist_remove_at(struct llist *l, int i, void **elem_p)
 {
-        (void) l, (void) i, (void) elem;
+        (void) l, (void) i, (void) elem_p;
         assert(0 && "TODO");
         return NULL;
 }
