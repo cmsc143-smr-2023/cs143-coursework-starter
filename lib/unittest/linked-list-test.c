@@ -269,28 +269,44 @@ static void test_insert_end(void)
 }
 
 struct unittest tests[] = {
+        /* 1. implement llist_free */
         Test(simple_create),
-        Test(test_append),
-        Test(test_append_null),
-        Test(test_len),
-        Test(test_len_null),
+        Test(test_reverse),
+        Test(test_reverse_null),
+
+        /* 2. implement llist_prepend */
         Test(test_prepend),
         Test(test_prepend_null),
+
+        /* 3. implement llist_len */
+        Test(test_len),
+        Test(test_len_null),
+
+        /* 4. implement llist_concat */
         Test(test_concat),
         Test(test_concat_left_null),
         Test(test_concat_right_null),
+
+        /* 4. implement llist_append */
+        Test(test_append),
+        Test(test_append_null),
+
+        /* 5. implement llist_copy */
         Test(test_copy),
         Test(test_copy_null),
-        Test(test_reverse),
-        Test(test_reverse_null),
+
+        /* 6. implement llst_remove_at */
         Test(test_remove_start),
         Test(test_remove_mid),
         Test(test_remove_end),
         Test(test_remove_non_null),
+
+        /* 7. implement llst_insert_at */
         Test(test_insert_start),
         Test(test_insert_mid),
         Test(test_insert_end),
-        /* your tests here */
+
+        /* YOU CAN ADD MORE TESTS HERE */
 };
 
 const int n_tests = sizeof(tests) / sizeof(tests[0]);
