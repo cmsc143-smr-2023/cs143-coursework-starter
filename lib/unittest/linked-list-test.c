@@ -1,0 +1,302 @@
+/* unit-testing for linked-list */
+
+#include "linked-list.h"
+#include "tests.h"
+
+#include <assert.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+/* convert an integer to a pointer */
+static void *_p(int i)
+{
+        assert(i != 0 && "0 is a NULL pointer");
+        return (void *)(intptr_t) i;
+}
+
+/* convert a pointer to an integer */
+static int _i(void *p)
+{
+        return (int)(uintptr_t) p;
+}
+
+static void simple_create(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), _p(3), NULL);
+
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+
+        llist_free(list);
+}
+
+static void test_append(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), _p(3), NULL);
+        list = llist_append(list, _p(4));
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+
+        llist_free(list);
+}
+
+static void test_append_null(void)
+{
+        struct llist *list = llist_append(NULL, _p(4));
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(4, _i(head->elem));
+        }
+
+        llist_free(list);
+}
+
+static void test_len(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), _p(3), NULL);
+        expect_eq(3, llist_len(list));
+        llist_free(list);
+}
+
+static void test_len_null(void)
+{
+        expect_eq(0, llist_len(NULL));
+}
+
+static void test_prepend(void)
+{
+        struct llist *list = llist_list(_p(2), _p(3), _p(4), NULL);
+        list = llist_prepend(list, _p(1));
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+
+        llist_free(list);
+}
+
+static void test_prepend_null(void)
+{
+        struct llist *list = llist_prepend(NULL, _p(1));
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(1, _i(head->elem));
+        }
+
+        llist_free(list);
+}
+
+static void test_concat(void)
+{
+        struct llist *list1 = llist_list(_p(1), _p(2), NULL);
+        struct llist *list2 = llist_list(_p(3), _p(4), NULL);
+
+        struct llist *list3 = llist_concat(list1, list2);
+        int i = 1;
+        for (struct llist *head = list3; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list3);
+}
+
+static void test_concat_left_null(void)
+{
+        struct llist *list1 = NULL;
+        struct llist *list2 = llist_list(_p(1), _p(2), NULL);
+
+        struct llist *list3 = llist_concat(list1, list2);
+        int i = 1;
+        for (struct llist *head = list3; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list3);
+}
+
+static void test_concat_right_null(void)
+{
+        struct llist *list1 = llist_list(_p(1), _p(2), NULL);
+        struct llist *list2 = NULL;
+
+        struct llist *list3 = llist_concat(list1, list2);
+        int i = 1;
+        for (struct llist *head = list3; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list3);
+}
+
+static void test_copy(void)
+{
+        struct llist *list1 = llist_list(_p(1), _p(2), NULL);
+        struct llist *list2 = llist_copy(list1);
+
+        int i = 1;
+        for (struct llist *head = list2; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list1);
+        llist_free(list2);
+}
+
+static void test_copy_null(void)
+{
+        struct llist *list1 = NULL;
+        struct llist *list2 = llist_copy(list1);
+
+        expect_eq(0, llist_len(list1));
+        expect_eq(0, llist_len(list2));
+}
+
+static void test_reverse(void)
+{
+        struct llist *list = llist_list(_p(3), _p(2), _p(1), NULL);
+        list = llist_reverse(list);
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_reverse_null(void)
+{
+        struct llist *list = NULL;
+        list = llist_reverse(list);
+        expect_eq(0, llist_len(list));
+}
+
+static void test_remove_start(void)
+{
+        struct llist *list = llist_list(_p(1), _p(1), _p(2), _p(3), NULL);
+        list = llist_remove_at(list, 0, NULL);
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_remove_end(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), _p(3), _p(1), NULL);
+        list = llist_remove_at(list, 3, NULL);
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_remove_mid(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), _p(1), _p(3), NULL);
+        list = llist_remove_at(list, 2, NULL);
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_remove_non_null(void)
+{
+        struct llist *list = llist_list(_p(1), _p(1), _p(2), _p(3), NULL);
+        void *elem;
+        list = llist_remove_at(list, 0, &elem);
+        expect_eq(1, _i(elem));
+
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_insert_start(void)
+{
+        struct llist *list = llist_list(_p(2), _p(3), NULL);
+
+        list = llist_insert_at(list, 0, _p(1));
+
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_insert_mid(void)
+{
+        struct llist *list = llist_list(_p(1), _p(3), NULL);
+
+        list = llist_insert_at(list, 1, _p(2));
+
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+static void test_insert_end(void)
+{
+        struct llist *list = llist_list(_p(1), _p(2), NULL);
+
+        list = llist_insert_at(list, 2, _p(3));
+
+        int i = 1;
+        for (struct llist *head = list; head != NULL; head = head->next) {
+                expect_eq(i, _i(head->elem));
+                i++;
+        }
+        llist_free(list);
+}
+
+struct unittest tests[] = {
+        Test(simple_create),
+        Test(test_append),
+        Test(test_append_null),
+        Test(test_len),
+        Test(test_len_null),
+        Test(test_prepend),
+        Test(test_prepend_null),
+        Test(test_concat),
+        Test(test_concat_left_null),
+        Test(test_concat_right_null),
+        Test(test_copy),
+        Test(test_copy_null),
+        Test(test_reverse),
+        Test(test_reverse_null),
+        Test(test_remove_start),
+        Test(test_remove_mid),
+        Test(test_remove_end),
+        Test(test_remove_non_null),
+        Test(test_insert_start),
+        Test(test_insert_mid),
+        Test(test_insert_end),
+        /* your tests here */
+};
+
+const int n_tests = sizeof(tests) / sizeof(tests[0]);
+
+int main(int argc, char *argv[])
+{
+        return test_main(argc, argv, tests, n_tests);
+}
+
