@@ -9,7 +9,7 @@
 void create_free(void)
 {
         struct alist *l = alist_create();
-        free(l);
+        alist_free(l);
 }
 
 void simple_append(void)
@@ -25,7 +25,7 @@ void simple_append(void)
                 expect_eq(i, num);
         }
 
-        free(l);
+        alist_free(l);
 }
 
 void simple_prepend(void)
@@ -41,7 +41,7 @@ void simple_prepend(void)
                 expect_eq(1024 - i - 1, num);
         }
 
-        free(l);
+        alist_free(l);
 }
 
 void test_len(void)
@@ -54,7 +54,7 @@ void test_len(void)
 
         expect_eq(1024, alist_len(l));
 
-        free(l);
+        alist_free(l);
 }
 
 void test_insert_at(void)
@@ -76,7 +76,7 @@ void test_insert_at(void)
                 expect_eq(1024 - i - 1, num);
         }
 
-        free(l);
+        alist_free(l);
 }
 
 void test_remove_at(void)
@@ -97,7 +97,7 @@ void test_remove_at(void)
 
         expect_eq(0, alist_len(l));
 
-        free(l);
+        alist_free(l);
 }
 
 void test_empty(void)
@@ -108,7 +108,7 @@ void test_empty(void)
         alist_append(l, NULL);
 
         expect_eq(false, alist_is_empty(l));
-        free(l);
+        alist_free(l);
 }
 
 struct unittest tests[] = {

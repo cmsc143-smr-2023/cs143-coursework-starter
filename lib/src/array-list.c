@@ -16,12 +16,15 @@ struct alist *alist_create(void)
 
 void alist_free(struct alist *l)
 {
+        assert(l != NULL);
         free(l->elems);
         free(l);
 }
 
 struct alist *alist_copy(const struct alist *other)
 {
+        assert(other != NULL);
+
         struct alist *l = malloc(sizeof(*l));
         l->length = other->length;
         l->capacity = other->capacity;
