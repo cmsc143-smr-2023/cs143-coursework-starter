@@ -20,24 +20,93 @@ static bool initialized = false;
 /* the place to jump to in case of an error */
 static jmp_buf error_jmp;
 
+enum reason {
+        ASSERT = 1,
+        SEGFAULT,
+        ABORT,
+};
+
+struct config {
+        bool keep_going;
+        bool capture_signals;
+};
+
+/* helper function to run all provided tests */
+static int run_tests(struct config *c, struct unittest tests[], int n_tests);
+
+/* callback function when SIGSEGV is raised */
+static void segv_handler(int);
+
+/* callback function when SIGABRT is raised */
+static void abrt_handler(int);
+
+/******************************************************************************/
+/*                                 test main                                  */
+/******************************************************************************/
+
 int test_main(int argc, char *argv[], struct unittest tests[], int n_tests)
 {
-        /* TODO: add a fail-fast flag */
-        (void) argc;
-        (void) argv;
-
         initialized = true;
 
+        struct config c = {
+                .keep_going = false,
+                .capture_signals = false,
+        };
+
+        for (int i = 1; i < argc; i++) {
+                if (strcmp(argv[i], "--keep-going") == 0) {
+                        c.keep_going = true;
+                } else if (strcmp(argv[i], "--capture") == 0) {
+                        c.capture_signals = true;
+                } else {
+                        fprintf(stderr, "unrecognized flag '%s'\n", argv[i]);
+                        return EXIT_FAILURE;
+                }
+        }
+
+        if (c.capture_signals) {
+                signal(SIGSEGV, segv_handler);
+                signal(SIGABRT, abrt_handler);
+        }
+
+        return run_tests(&c, tests, n_tests);
+}
+
+static int run_tests(struct config *c, struct unittest tests[], int n_tests)
+{
         int n_test_failed = 0;
         int n_test_run = 0;
         for (int i = 0; i < n_tests; i++) {
+                bool succeed = false;
                 n_test_run++;
-                if (setjmp(error_jmp) == 0) {
+
+                switch (setjmp(error_jmp)) {
+                case 0:
                         printf("Running tests: %-32s", tests[i].name);
                         tests[i].run();
                         printf("\t\tPASS\n");
-                } else {
+                        succeed = true;
+                        break;
+                case ASSERT:
+                        /* error messages are printed in the assertions */
+                        break;
+                case ABORT:
+                        printf("\t\tFAIL\n\tTest aborted\n");
+                        break;
+                case SEGFAULT:
+                        printf("\t\tFAIL\n\tTest segfault'ed\n");
+                        break;
+                default:
+                        fprintf(stderr,
+                                "INTERNAL ERROR: unknown longjmp code\n");
+                        abort();
+                };
+
+                if (!succeed) {
                         n_test_failed++;
+                        if (!c->keep_going) {
+                                break;
+                        }
                 }
         }
 
@@ -54,6 +123,23 @@ int test_main(int argc, char *argv[], struct unittest tests[], int n_tests)
                 return EXIT_SUCCESS;
         }
 }
+
+static void segv_handler(int signum)
+{
+        (void) signum;
+        longjmp(error_jmp, SEGFAULT);
+}
+
+static void abrt_handler(int signum)
+{
+        (void) signum;
+        longjmp(error_jmp, ABORT);
+}
+
+/******************************************************************************/
+/*                            Exported Functions                              */
+/******************************************************************************/
+
 
 FILE *mkfile(const char *str)
 {
@@ -92,7 +178,7 @@ void test_fail(const char *format, ...)
         vprintf(format, args);
         va_end(args);
 
-        longjmp(error_jmp, 1);
+        longjmp(error_jmp, ASSERT);
 }
 
 void test_expect_eq(unsigned long exp, unsigned long actual,
@@ -124,7 +210,7 @@ void test_expect_non_null(const void *s, const char *file, int line)
 
         test_fail("\t\tFAIL\n\t%s:%d: expecting non-NULL but received NULL\n",
                         file, line);
-        longjmp(error_jmp, 1);
+        longjmp(error_jmp, ASSERT);
 }
 
 void test_expect_mem(const void *s1, const void *s2, size_t n,
@@ -150,7 +236,7 @@ void test_expect_mem(const void *s1, const void *s2, size_t n,
                 }
         }
 
-        longjmp(error_jmp, 1);
+        longjmp(error_jmp, ASSERT);
 }
 
 void test_expect_str(const char *s1, const char *s2,
