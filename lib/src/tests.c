@@ -83,7 +83,7 @@ static int run_tests(struct config *c, struct unittest tests[], int n_tests)
 
                 switch (setjmp(error_jmp)) {
                 case 0:
-                        printf("Running tests: %-32s", tests[i].name);
+                        printf("Running test: %-32s", tests[i].name);
                         tests[i].run();
                         printf("\t\tPASS\n");
                         succeed = true;
