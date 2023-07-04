@@ -36,6 +36,9 @@ FILE *mkfile(const char *str);
 /* same as the above, but only for the first n bytes in str */
 FILE *mkfilen(const char *str, size_t n);
 
+/* make n random heap-allocated strings */
+char **mk_random_strs(int n);
+
 /* abort a test */
 void test_fail(const char *format, ...);
 

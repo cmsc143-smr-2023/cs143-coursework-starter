@@ -5,6 +5,7 @@
  * Description: This file implements the "test.h" interface, providing the main
  * function for the unit tests to run and implementing the checking facilities.
  */
+#define _GNU_SOURCE
 #include "tests.h"
 
 #include <setjmp.h>
@@ -164,6 +165,27 @@ FILE *mkfilen(const char *str, size_t n)
         rewind(file);
 
         return file;
+}
+
+char **mk_random_strs(int n)
+{
+        char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                         "1234567890_";
+        const int n_chars = sizeof(charset) - 1;
+
+        char **strs = calloc(n, sizeof(*strs));
+        for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n_chars; j++) {
+                        int k = rand() % n_chars;
+
+                        char c = charset[j];
+                        charset[j] = charset[k];
+                        charset[k] = c;
+                }
+                strs[i] = strdup(charset);
+        }
+
+        return strs;
 }
 
 void test_fail(const char *format, ...)
