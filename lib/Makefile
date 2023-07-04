@@ -6,12 +6,12 @@ UNITTEST = ./unittest
 BIN     = ./bin
 
 CC      = clang
-CFLAGS  += -g -Wall -Wextra -Werror -Wfatal-errors -pedantic -std=c11 -O3 \
-					-I$(INCLUDE)
-LDFLAGS += -g -O3 -std=c11 -L./lib
+CFLAGS  += -gdwarf-4 -Wall -Wextra -Werror -Wfatal-errors -pedantic -std=c11 \
+					 -O3 -I$(INCLUDE)
+LDFLAGS += -gdwarf-4 -O3 -std=c11 -L./lib
 
 # if you are adding any additional files, please add them here.
-UNITS = readline tests array-list linked-list dynamic-buffer
+UNITS = readline tests array-list linked-list dynamic-buffer map
 
 # the list of objects is the list of units + .o suffix
 OBJS := $(UNITS:%=$(BUILD)/%.o)
