@@ -1,0 +1,49 @@
+HOMEWORK 3 WRITTEN
+=======================
+
+Question 1
+
+Explain in your own words how map_remove() works? What are the cases? What is
+the purpose of tree_p?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 2
+
+Consider a tall, narrow tree and a short, wide tree, both of which have the same
+number of entries. Which one has better performance of tree operations? Why?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 3
+
+How many hours did you spend for this assignment?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 4
+
+What is the most difficult aspect of this assignment, if any?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 5
+
+Document your collaboration here.
+
+     ...YOUR ANSWER HERE...
+
+
+------------------------------------The End-------------------------------------
