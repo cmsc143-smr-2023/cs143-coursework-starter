@@ -41,24 +41,45 @@ void map_free(struct map *m)
 {
         assert(m != NULL);
 
-        /* ... YOUR CODE HERE  ... */
-        assert(0 && "TODO");
+        struct alist *todo = alist_create();
+
+        struct tree_node *root = m->root;
+        if (root != NULL) {
+                alist_append(todo, root);
+        }
+
+        while (!alist_is_empty(todo)) {
+                int len = alist_len(todo);
+                struct tree_node *curr = alist_remove_at(todo, len - 1);
+
+                if (curr->left != NULL) {
+                        alist_append(todo, curr->left);
+                }
+                if (curr->right != NULL) {
+                        alist_append(todo, curr->right);
+                }
+                free(curr);
+        }
+
+        alist_free(todo);
+        free(m);
 }
 
 void *map_get(struct map *m, void *key)
 {
         assert(m != NULL && key != NULL);
 
-        /* ... YOUR CODE HERE ... */
-        assert(0 && "TODO");
-
-        /* HINT: to use the cmp function to compare two keys k0 and k1
-         * (which we have received from the user in map_create), call it as
-         * follows:
-         *         m->cmp(k0, k1)
-         * this function returns 0 if k0 == k1, positive if k0 > k1, and
-         * negative if k0 < k1.
-         */
+        struct tree_node *curr = m->root;
+        while (curr != NULL) {
+                int cmp_result = m->cmp(key, curr->key);
+                if (cmp_result == 0) {
+                        return curr->value;
+                } else if (cmp_result < 0) {
+                        curr = curr->left;
+                } else {
+                        curr = curr->right;
+                }
+        }
 
         return NULL;
 }
@@ -67,9 +88,28 @@ void *map_insert(struct map *m, void *key, void *value)
 {
         assert(m != NULL && key != NULL && value != NULL);
 
-        /* ... YOUR CODE HERE ... */
-        assert(0 && "TODO");
+        struct tree_node **tree_p = &m->root;
+        while (*tree_p != NULL) {
+                int cmp_result = m->cmp(key, (*tree_p)->key);
 
+                if (cmp_result == 0) {
+                        void *old_value = (*tree_p)->value;
+                        (*tree_p)->value = value;
+                        return old_value;
+                } else if (cmp_result < 0) {
+                        tree_p = &(*tree_p)->left;
+                } else {
+                        tree_p = &(*tree_p)->right;
+                }
+        }
+
+        struct tree_node *r = malloc(sizeof(*r));
+        r->key = key;
+        r->value = value;
+        r->left = NULL;
+        r->right = NULL;
+
+        *tree_p = r;
         return NULL;
 }
 
