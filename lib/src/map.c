@@ -119,9 +119,8 @@ void *map_remove(struct map *m, void *key)
                 tree->key   = (*closest_p)->key;
                 tree->value = (*closest_p)->value;
 
-                if ((*closest_p)->right != NULL) {
-                        *closest_p = (*closest_p)->right;
-                }
+                free(*closest_p);
+                *closest_p = (*closest_p)->right;
         }
 
         return old_value;
