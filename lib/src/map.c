@@ -191,24 +191,20 @@ void map_walk(struct map *m,
 {
         assert(m != NULL && visit != NULL);
 
-        struct tree_node *root = m->root;
-
+        struct tree_node *curr = m->root;
         struct alist *todo = alist_create();
-        if (root != NULL) {
-                alist_append(todo, root);
-        }
 
-        while (!alist_is_empty(todo)) {
-                int len = alist_len(todo);
-                struct tree_node *curr = alist_remove_at(todo, len - 1);
+        while (!alist_is_empty(todo) || curr != NULL) {
+                if (curr != NULL) {
+                        alist_append(todo, curr);
+                        curr = curr->left;
+                } else {
+                        int len = alist_len(todo);
+                        curr = alist_remove_at(todo, len - 1);
 
-                if (curr->left != NULL) {
-                        alist_append(todo, curr->left);
+                        visit(curr->key, curr->value, data);
+                        curr = curr->right;
                 }
-                if (curr->right != NULL) {
-                        alist_append(todo, curr->right);
-                }
-                visit(curr->key, curr->value, data);
         }
 
         alist_free(todo);
