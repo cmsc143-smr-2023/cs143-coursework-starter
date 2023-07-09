@@ -145,7 +145,7 @@ void *map_remove(struct map *m, void *key)
                 *tree_p = tmp;
         } else if ((*tree_p)->right == NULL) {
                 /* if root has only left child */
-                struct tree_node *tmp = (*tree_p)->right;
+                struct tree_node *tmp = (*tree_p)->left;
                 free(*tree_p);
                 *tree_p = tmp;
         } else {
