@@ -78,13 +78,18 @@ static int run_tests(struct config *c, struct unittest tests[], int n_tests)
 {
         int n_test_failed = 0;
         int n_test_run = 0;
+
+        sigset_t all_signals;
+        sigfillset(&all_signals);
+
         for (int i = 0; i < n_tests; i++) {
                 bool succeed = false;
                 n_test_run++;
 
                 switch (setjmp(error_jmp)) {
                 case 0:
-                        printf("Running test: %-32s", tests[i].name);
+                        printf("Running tests: %-32s", tests[i].name);
+                        sigprocmask(SIG_UNBLOCK, &all_signals, NULL);
                         tests[i].run();
                         printf("\t\tPASS\n");
                         succeed = true;

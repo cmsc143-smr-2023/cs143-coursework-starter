@@ -33,6 +33,8 @@ struct unittest tests[] = {
         Test(should_all_pass),
         Test(should_fail),
         Test(should_abort),
+        Test(should_abort),
+        Test(should_segfault),
         Test(should_segfault),
 };
 
@@ -41,5 +43,5 @@ const int n_tests = sizeof(tests) / sizeof(tests[0]);
 int main(int argc, char *argv[])
 {
         (void) n_tests;
-        return test_main(argc, argv, tests, 1);
+        return test_main(argc, argv, tests, n_tests);
 }
