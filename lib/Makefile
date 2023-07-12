@@ -11,7 +11,7 @@ CFLAGS  += -gdwarf-4 -Wall -Wextra -Werror -Wfatal-errors -pedantic -std=c11 \
 LDFLAGS += -gdwarf-4 -O3 -std=c11 -L./lib
 
 # if you are adding any additional files, please add them here.
-UNITS = readline tests array-list linked-list dynamic-buffer map
+UNITS = readline tests array-list linked-list dynamic-buffer map table substring
 
 # the list of objects is the list of units + .o suffix
 OBJS := $(UNITS:%=$(BUILD)/%.o)
