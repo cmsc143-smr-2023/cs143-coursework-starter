@@ -1,0 +1,52 @@
+HOMEWORK 4 WRITTEN
+=======================
+
+Question 1
+
+If the hash table is provided with the following (terrible) hash function,
+     hash(k) = 1,
+what data structure does the hash table become?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 2
+
+When the load factor (#elements / #buckets) becomes too big, a production-level
+hash table will expand the array to increase the number of buckets. Can we just
+use `realloc` on the array of buckets without modifying the chains? Why or why
+not?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 3
+
+How many hours did you spend for this assignment?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 4
+
+What is the most difficult aspect of this assignment, if any?
+
+     ...YOUR ANSWER HERE...
+
+
+--------------------------------------------------------------------------------
+
+Question 5
+
+Document your collaboration here.
+
+     ...YOUR ANSWER HERE...
+
+
+------------------------------------The End-------------------------------------
