@@ -55,16 +55,9 @@ struct table *table_create(int hint,
 
 void table_free(struct table *t)
 {
-        for (int i = 0; i < t->size; i++) {
-                struct bucket *b = t->buckets[i];
-                while (b != NULL) {
-                        struct bucket *next = b->next;
-                        free(b);
-                        b = next;
-                }
-        }
+        assert(t != NULL);
 
-        free(t);
+        assert(0 && "TODO");
 }
 
 void *table_get(struct table *t, void *key)
