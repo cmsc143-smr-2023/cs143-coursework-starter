@@ -35,7 +35,6 @@ struct table *table_create(int hint,
         assert(hint >= 0);
         assert(eq != NULL && hash != NULL);
 
-        /* find the closest prime that is greater than the hint */
         int i;
         for (i = 1; PRIMES[i] < hint; i++);
         int size = PRIMES[i - 1];
@@ -55,17 +54,28 @@ struct table *table_create(int hint,
 
 void table_free(struct table *t)
 {
-        assert(t != NULL);
+        for (int i = 0; i < t->size; i++) {
+                struct bucket *b = t->buckets[i];
+                while (b != NULL) {
+                        struct bucket *next = b->next;
+                        free(b);
+                        b = next;
+                }
+        }
 
-        assert(0 && "TODO");
+        free(t);
 }
 
 void *table_get(struct table *t, void *key)
 {
         assert(t != NULL && key != NULL);
 
-        assert(0 && "TODO");
-
+        int idx = t->hash(key) % t->size;
+        for (struct bucket *b = t->buckets[idx]; b != NULL; b = b->next) {
+                if (t->eq(key, b->key) == 0) {
+                        return b->value;
+                }
+        }
         return NULL;
 }
 
@@ -73,17 +83,52 @@ void *table_insert(struct table *t, void *key, void *value)
 {
         assert(t != NULL && key != NULL && value != NULL);
 
-        assert(0 && "TODO");
+        int idx = t->hash(key) % t->size;
 
-        return NULL;
+        struct bucket *b;
+        for (b = t->buckets[idx]; b != NULL; b = b->next) {
+                if (t->eq(key, b->key) == 0) {
+                        break;
+                }
+        }
 
+        if (b == NULL) {
+                b = malloc(sizeof(*b));
+                b->key   = key;
+                b->value = value;
+
+                b->next = t->buckets[idx];
+                t->buckets[idx] = b;
+
+                t->length++;
+
+                return NULL;
+        } else {
+                void *old_value = b->value;
+                b->value = value;
+
+                return old_value;
+        }
 }
 
 void *table_remove(struct table *t, void *key)
 {
         assert(t != NULL && key != NULL);
 
-        assert(0 && "TODO");
+        int idx = t->hash(key) % t->size;
+
+        for (struct bucket **b_p = &t->buckets[idx];
+                        *b_p != NULL;
+                        b_p = &(*b_p)->next) {
+                if (t->eq(key, (*b_p)->key) == 0) {
+                        void *old_value = (*b_p)->value;
+                        struct bucket *next = (*b_p)->next;
+                        free(*b_p);
+                        *b_p = next;
+                        t->length--;
+                        return old_value;
+                }
+        }
 
         return NULL;
 }
@@ -111,5 +156,6 @@ void table_walk(struct table *t,
                 }
         }
 }
+
 
 
