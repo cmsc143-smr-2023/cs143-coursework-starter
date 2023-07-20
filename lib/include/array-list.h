@@ -20,13 +20,13 @@ void alist_free(struct alist *l);
 struct alist *alist_copy(const struct alist *l);
 
 /* add the elements to the back of the array list */
-void alist_append(struct alist *l, void *elem);
+static inline void alist_append(struct alist *l, void *elem);
 
 /* add the elements to the front of the array list */
 void alist_prepend(struct alist *l, void *elem);
 
 /* return the length of the list */
-int alist_len(struct alist *l);
+static inline int alist_len(struct alist *l);
 
 /* return the capacity of the list */
 int alist_capacity(struct alist *l);
@@ -47,5 +47,30 @@ bool alist_is_empty(struct alist *l);
 
 /* return a reference to the i-th element */
 void **alist_at(struct alist *l, int i);
+
+/* definition inlining */
+#include <assert.h>
+#include <stdlib.h>
+
+static inline void alist_append(struct alist *l, void *elem)
+{
+        assert(l != NULL && "l is null");
+
+        if (l->length >= l->capacity) {
+                l->capacity *= 2;
+                l->elems = realloc(l->elems, l->capacity * sizeof(*l->elems));
+        }
+
+        l->elems[l->length] = elem;
+        l->length += 1;
+}
+
+static inline int alist_len(struct alist *l)
+{
+        assert(l != NULL && "l is null");
+
+        return l->length;
+}
+
 
 #endif
