@@ -35,29 +35,9 @@ struct alist *alist_copy(const struct alist *other)
         return l;
 }
 
-void alist_append(struct alist *l, void *elem)
-{
-        assert(l != NULL && "l is null");
-
-        if (l->length >= l->capacity) {
-                l->capacity *= 2;
-                l->elems = realloc(l->elems, l->capacity * sizeof(*l->elems));
-        }
-
-        l->elems[l->length] = elem;
-        l->length += 1;
-}
-
 void alist_prepend(struct alist *l, void *elem)
 {
         alist_insert_at(l, 0, elem);
-}
-
-int alist_len(struct alist *l)
-{
-        assert(l != NULL && "l is null");
-
-        return l->length;
 }
 
 void alist_insert_at(struct alist *l, int i, void *elem)
