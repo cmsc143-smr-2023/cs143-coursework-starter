@@ -10,7 +10,7 @@
 static inline enum major major_number(char major_name[]);
 static inline const char *major_name(enum major major);
 
-#define STUDENT_FORMAT_I "%"PRIu32"\t%"PRIu8"\t%"PRIi8"\t%c\t%63[^\t]\t%17[^\n]\n"
+#define STUDENT_FORMAT_I "%"SCNu32"\t%"SCNu8"\t%"SCNi8"\t%c\t%63[^\t]\t%17[^\n]\n"
 #define STUDENT_FORMAT_O "%"PRIu32"\t%"PRIu8"\t%"PRIi8"\t%c\t%s\t%s\n"
 
 struct student *student_create(uint32_t ucid,
