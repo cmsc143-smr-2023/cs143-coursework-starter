@@ -62,9 +62,9 @@ struct student *student_read(FILE *file)
                 return NULL;
         }
 
-        struct student *s = malloc(sizeof *s);
+        struct student *s = calloc(1, sizeof *s);
 
-        char major_name[64];
+        char major_name[64] = { 0 };
 
         /* fscanf is the opposite of fprintf. It ``scans'' the file according to
          * a particular format, and returns how many of the fields are scanned
